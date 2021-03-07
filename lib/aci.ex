@@ -7,8 +7,33 @@ defmodule ACI do
   ACI Automation
 
   ## Examples
+    iex(66)> ACI.start
+    [OK] Post Request successful!
+    [OK] Authentication successful!
+    [OK] Get Request successful!
+    [OK] Tenant List Retrive successful!
 
-
+    [Result] Total retrive Tenant: 19
+    [Result] Tenant List
+              * infra
+              * mgmt
+              * common
+              * Heroes
+              * SnV
+              * VM-LAB
+              * Prod
+              * tenant_kit
+              * test
+              * DEMO-TN
+              * DevNet
+              * D
+              * K
+              * PH_TEST
+              * Darknova-2
+              * Darknova
+              * testtest
+              * INITIALS_Example_Tenant
+              * CL-Test
   """
   alias Poison
   alias HTTPoison
@@ -17,17 +42,29 @@ defmodule ACI do
 
   def start() do
     cookies = auth(apic_ip, username,password)
-    list_tenants(apic_ip,cookies)
-    #{:ok}
+    tenants_list=list_tenants(apic_ip,cookies)
+    IO.puts("")
+
+    imdata = tenants_list["imdata"]
+    total_tenants = tenants_list["totalCount"]
+    IO.puts("[Result] Total retrive Tenant: " <> total_tenants)
+    IO.puts("[Result] Tenant List")
+    for tenant <- imdata do
+      IO.puts("          * " <> tenant["fvTenant"][ "attributes"]["name"])
+
+    end
+    IO.puts("")
+
+    :ok
   end
 
   def list_tenants(apic_ip,cookies) do
     uri = "/api/class/fvTenant.json"
     {response,status_code}=get_request(apic_ip,uri,[],hackney: [cookie: cookies])
     if status_code < 200 or status_code >= 300 do
-         IO.puts("\n[ERROR] Tenant List Retrive failed!")
+         IO.puts("[ERROR] Tenant List Retrive failed!")
     else
-         IO.puts("\n[OK] Tenant List Retrive successful!")
+         IO.puts("[OK] Tenant List Retrive successful!")
     end
     str_to_map(response.body)
   end
@@ -45,9 +82,9 @@ defmodule ACI do
     {response,status_code} = post_request(apic_ip,body,uri,[],[])
     {"Set-Cookie", cookies}=Enum.at(response.headers, 5)
     if status_code < 200 or status_code >= 300 do
-         IO.puts("\n[ERROR] Authentication failed!")
+         IO.puts("[ERROR] Authentication failed!")
     else
-         IO.puts("\n[OK] Authentication successful!")
+         IO.puts("[OK] Authentication successful!")
     end
     cookies
   end
@@ -63,12 +100,12 @@ defmodule ACI do
           status_code: status_code
       }= HTTPoison.get!(url, headers,options)
       if status_code < 200 or status_code >= 300 do
-           IO.puts("\n[ERROR] Get Request failed! APIC responded with:")
+           IO.puts("[ERROR] Get Request failed! APIC responded with:")
            [head|_]=str_to_map(body)["imdata"]
            IO.inspect(head["error"]["attributes"]["code"])
            IO.inspect(head["error"]["attributes"]["text"])
       else
-           IO.puts("\n[OK] Get Request successful!")
+           IO.puts("[OK] Get Request successful!")
       end
           {response,status_code}
       end
@@ -84,12 +121,12 @@ defmodule ACI do
         status_code: status_code
     }= HTTPoison.post!(url, body,headers,options)
     if status_code < 200 or status_code >= 300 do
-         IO.puts("\n[ERROR] Post Request failed! APIC responded with:")
+         IO.puts("[ERROR] Post Request failed! APIC responded with:")
          [head|_]=str_to_map(body)["imdata"]
          IO.inspect(head["error"]["attributes"]["code"])
          IO.inspect(head["error"]["attributes"]["text"])
     else
-         IO.puts("\n[OK] Post Request successful!")
+         IO.puts("[OK] Post Request successful!")
     end
       {response,status_code}
     end
