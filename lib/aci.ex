@@ -31,19 +31,6 @@ defmodule ACI do
     end
     str_to_map(response.body)
   end
-  # def main():
-  #     cookies = get_cookies(APIC_HOST)
-  #
-  #     rsp = get_request(APIC_HOST, cookies, "/api/class/fvTenant.json")
-  #     rsp_dict = json.loads(rsp.text)
-  #     tenants = rsp_dict["imdata"]
-  #
-  #     print("\nNumber of tenants: {}".format(rsp_dict["totalCount"]))
-  #
-  #     for tenant in tenants:
-  #         print(tenant["fvTenant"]["attributes"]["name"])
-
-
 
   def auth(apic_ip, username,password) do
     uri = "/api/aaaLogin.json"
@@ -64,7 +51,6 @@ defmodule ACI do
     end
     cookies
   end
-    #headers =  hackney: [:insecure]
 
 
     def get_request(apic_ip,uri,headers,options) do
