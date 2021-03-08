@@ -23,6 +23,7 @@ defmodule ACI.MixProject do
     [
       {:httpoison, "~> 1.8"},
       {:poison, "~> 4.0"},
+      {:json, "~> 1.4"},
       {:hackney, "~> 1.6.1", override: true }
 
       # {:dep_from_hexpm, "~> 0.3.0"},
