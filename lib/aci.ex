@@ -36,9 +36,13 @@ defmodule ACI do
     if final_status == 0 do
       {status,tenants_list}=list_tenants(apic_ip,cookies)
       final_status = final_status + status
-      {status,output}=create_sec_domain(apic_ip,cookies,"SECDOM-PYTHON","Python Managed Tenants")
+      {status,_}=create_sec_domain(apic_ip,cookies,"SECDOM-PYTHON","Python Managed Tenants")
       final_status = final_status + status
-      {status,output} = add_user_tosec(apic_ip,cookies,"python","cisco123","all","read-all", "readPriv","SECDOM-PYTHON","tenant-ext-admin","writePriv")
+      {status,_} = add_user_tosec(apic_ip,cookies,"python","cisco123","all","read-all", "readPriv","SECDOM-PYTHON","tenant-ext-admin","writePriv")
+      final_status = final_status + status
+      {status,_} = create_tenant_bind_sec(apic_ip,cookies,"SecurityTrial","SECDOM-PYTHON")
+      final_status = final_status + status
+      {status,_} = create_vrf(apic_ip,cookies,"uni/tn-SecurityTrial/ctx-Security_VRF","Security_VRF","ctx-Security_VRF","created")
       final_status = final_status + status
       IO.puts("=====================Result==========================")
       ## Result
@@ -59,6 +63,59 @@ defmodule ACI do
       :err
     end
   end
+
+  # Create new VRF
+  def create_vrf(apic_ip,cookies,dn,vrf_name,rn,status) do
+    uri = "/api/mo/" <> dn <> ".json"
+    vrf = JSON.encode!(%{
+        "fvCtx"=> %{
+            "attributes"=> %{
+                "dn"=> dn,
+                "name"=> vrf_name,
+                "rn"=> rn,
+                "status"=> status,
+            }
+        }
+    })
+
+    {response,status_code} = post_request(apic_ip,vrf,uri,[],hackney: [cookie: cookies])
+    if status_code < 200 or status_code >= 300 do
+         IO.puts("[ERROR] VRF Creation failed!")
+         {1,str_to_map(response.body)}
+    else
+         IO.puts("[OK] VRF Creation successful!")
+         {0,str_to_map(response.body)}
+    end
+
+ end
+
+
+  # Create new security domain
+  def create_tenant_bind_sec(apic_ip,cookies,tenant,sec_domain) do
+    uri = "/api/mo/uni/tn-" <> tenant <> ".json"
+      tenant = JSON.encode!(%{
+          "fvTenant" => %{
+              "attributes"=> %{
+                "name"=> tenant
+                },
+              "children"=> [%{
+                "aaaDomainRef"=> %{
+                  "attributes"=> %{
+                    "name"=> sec_domain
+                    }}}],
+          }
+      })
+
+      {response,status_code} = post_request(apic_ip,tenant,uri,[],hackney: [cookie: cookies])
+      if status_code < 200 or status_code >= 300 do
+           IO.puts("[ERROR] Tenant failed to bind to the security domain!")
+           {1,str_to_map(response.body)}
+      else
+           IO.puts("[OK] Tenant successful bind to the security domain !")
+           {0,str_to_map(response.body)}
+      end
+end
+
 
 ## add user to security domain
 def add_user_tosec(apic_ip,cookies,username,password,range,user_role, privacy_type,security_domain,sec_user_role,sec_priv) do
