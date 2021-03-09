@@ -25,23 +25,23 @@ param - Parameter for all module
 ACI Module In Progress....  
 
 ## Examples
-$ iex -S mix
-iex(65)> import ACI
-iex(66)> start
-=====================Log==========================
-[OK] Post Request successful!
-[OK] Authentication successful!
-[OK] Get Request successful!
-[OK] Tenant List Retrive successful!
-[OK] Post Request successful!
-[OK] Security Domain-Manage Object update successful!
-=====================Result==========================
-[Result] Total retrive Tenant: 2
-[Result] Tenant List
-          * TEST1
-          * TEST2
-=======================End==============================
-:ok
+$ iex -S mix  
+iex(65)> import ACI  
+iex(66)> start  
+=====================Log==========================  
+[OK] Post Request successful!  
+[OK] Authentication successful!  
+[OK] Get Request successful!  
+[OK] Tenant List Retrive successful!  
+[OK] Post Request successful!  
+[OK] Security Domain-Manage Object update successful!  
+=====================Result==========================  
+[Result] Total retrive Tenant: 2  
+[Result] Tenant List  
+          * TEST1  
+          * TEST2  
+=======================End==============================  
+:ok  
 
 ## Installation (Not available yet)
 
