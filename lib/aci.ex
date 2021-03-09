@@ -15,6 +15,16 @@ defmodule ACI do
     [OK] Tenant List Retrive successful!
     [OK] Post Request successful!
     [OK] Security Domain-Manage Object update successful!
+    [ERROR] Post Request failed! APIC responded with:
+    "1"
+    "Password history check: user python should not use previous 5 passwords"
+    [ERROR] New user creation and privileges assign to the Security Domain Process failed!
+    [OK] Post Request successful!
+    [OK] Tenant successful bind to the security domain !
+    [ERROR] Post Request failed! APIC responded with:
+    "103"
+    "Cannot create VRF (fvCtx); object uni/tn-SecurityTrial/ctx-Security_VRF already exists."
+    [ERROR] VRF Creation failed!
     =====================Result==========================
     [Result] Total retrive Tenant: 51
     [Result] Tenant List

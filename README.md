@@ -3,6 +3,8 @@
 Practice toolset for Cisco Automating Cisco Data Center Solutions. Inspired by Cisco DCAUTI Training  
 
 Testbed for Elixir Data Center Network Automation  
+Suggest to test the library with Cisco Devnet Sandbox:  
+https://developer.cisco.com/docs/aci/#!sandbox/aci-sandboxes  
 
 Module list:  
 aci - ACI Automation  
@@ -13,7 +15,7 @@ Parameter for Login:
 param - Parameter for all module  
 
 # Status
-In Progress....  
+ACI Module In Progress....  
 
 ## Installation (Not available yet)
 
