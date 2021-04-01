@@ -7,11 +7,9 @@ Suggest to test the library with Cisco Devnet Sandbox:
 ACI:  
 https://developer.cisco.com/docs/aci/#!sandbox/aci-sandboxes  
 NXOS:  
-
+https://devnetsandbox.cisco.com/RM/Diagram/Index/0e22761d-f813-415d-a557-24fa0e17ab50?diagramType=Topology
 
 UCS:  
-
-
 
 ## Module list
 aci - ACI Automation  
@@ -21,10 +19,16 @@ ucs - UCS Automation
 Parameter for Login:  
 param - Parameter for all module  
 
+## Sub-Module (Seperate Repository)
+nxos:  
+Nexus POAP Elixir Server  
+https://github.com/GiantPanda0090/DCAUI_POAP_SERVER
+
 ## Status
-ACI Module In Progress....  
+NXOS Module In Progress....  
 
 ## Examples
+```
 $ iex -S mix  
 iex(65)> import ACI  
 iex(66)> start  
@@ -42,6 +46,7 @@ iex(66)> start
           * TEST2  
 =======================End==============================  
 :ok  
+```
 
 ## Installation (Not available yet)
 
